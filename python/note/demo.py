@@ -331,8 +331,7 @@ if __name__ == "__main__":
     # itp = BarycentricInterpolator(x1, y1)  # 重心插值
     # x2 = np.linspace(x.min(), x.max(), 50)
     # y2 = itp(x2)
-    # cs = scipy.interpolate.CubicSpline(x1, y1)       # 三次样条插值
-    # plot.plot(x2, cs(x2), 'm--', linewidth=5, label='CubicSpine')           # 三次样条插值
+    # cs = scipy.interpolate.CubicSpline(x1, y1)       # 三次样条插值data_structure # plot.plot(x2, cs(x2), 'm--', linewidth=5, label='CubicSpdata_structure)           # 三次样条插值
     # plot.plot(x2, y2, 'g-', linewidth=3, label='BarycentricInterpolator')   # 重心插值
     # plot.plot(x1, y1, 'r-', linewidth=1, label='Actural Value')             # 原始值
     # plot.legend(loc='upper right')
