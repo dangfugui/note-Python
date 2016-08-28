@@ -217,23 +217,19 @@ if __name__ == "__main__":
     # print a[i]
     # print a[i, 3]
 
- 
-    #===========================================================================
-    #  #4. numpy与Python数学库的时间比较
+    # # 4. numpy与Python数学库的时间比较
     # for j in np.logspace(0, 7, 10):
     #     x = np.linspace(0, 10, j)
     #     start = time.clock()
     #     y = np.sin(x)
     #     t1 = time.clock() - start
-    #  
+    #
     #     x = x.tolist()
     #     start = time.clock()
     #     for i, t in enumerate(x):
     #         x[i] = math.sin(t)
     #     t2 = time.clock() - start
     #     print j, ": ", t1, t2, t2/t1
-    #===========================================================================
-
 
     # 5.绘图
     # 5.1 绘制正态分布概率密度函数
@@ -246,18 +242,18 @@ if __name__ == "__main__":
     # plot.grid(True)
     # plot.show()
 
-    # # 5.2 损失函数：Logistic损失(-1,1)/SVM Hinge损失/ 0/1损失
-    # x = np.linspace(-3, 3, 1000)
-    # y_logit = np.log(1 + np.exp(-x)) / math.log(2)
-    # y_01 = x < 0
-    # y_hinge = 1 - x
-    # y_hinge[y_hinge < 0] = 0
-    # plot.plot(x, y_logit, 'r-', label='Logistic Loss', linewidth=2)
-    # plot.plot(x, y_01, 'g-', label='0/1 Loss', linewidth=2)
-    # plot.plot(x, y_hinge, 'b-', label='Hinge Loss', linewidth=2)
-    # plot.grid()
-    # plot.legend(loc='upper right')
-    # plot.show()
+    # 5.2 损失函数：Logistic损失(-1,1)/SVM Hinge损失/ 0/1损失
+    x = np.linspace(-3, 3, 1000)
+    y_logit = np.log(1 + np.exp(-x)) / math.log(2)
+    y_01 = x < 0
+    y_hinge = 1 - x
+    y_hinge[y_hinge < 0] = 0
+    plot.plot(x, y_logit, 'r-', label='Logistic Loss', linewidth=2)
+    plot.plot(x, y_01, 'g-', label='0/1 Loss', linewidth=2)
+    plot.plot(x, y_hinge, 'b-', label='Hinge Loss', linewidth=2)
+    plot.grid()
+    plot.legend(loc='upper right')
+    plot.show()
 
     # # 5.3 x^x
     # x = np.linspace(-1.3, 1.3, 101)
