@@ -15,7 +15,7 @@ from sklearn.preprocessing.data import StandardScaler
 
 class LogisticRegression_my():
     def __init__(self):#初始化
-        self.linearRegression_lris()
+        self.linearRegression_lris(True)
    
     def readFile(self):
         path=u'..\\..\\data\\machine-learning-4\\4.iris.data'
@@ -51,10 +51,11 @@ class LogisticRegression_my():
         # 将数据的0到3列组成x，第4列得到y
         x, y = np.split(data, (4,), axis=1)#axis 0是按行切 1是按照列分
         return x,y
-    def linearRegression_lris(self):
+    def linearRegression_lris(self,forview=False):
         x,y=self.readFile()
         # 为了可视化，仅使用前两列特征
-        #x = x[:, :2]
+        if forview:
+            x = x[:, :2]
         #x=StandardScaler().fit_transform(x)#标准化  #这个做了不好
         logreg = LogisticRegression()   # Logistic回归模型
         logreg.fit(x, y.ravel())        # 根据数据[x,y]，计算回归参数
@@ -70,10 +71,11 @@ class LogisticRegression_my():
         print t1
         print t2
         print x_test
+        if forview==False:
         # 无意义，只是为了凑另外两个维度
-        x3 = np.ones(x1.size) * np.average(x[:, 2])
-        x4 = np.ones(x1.size) * np.average(x[:, 3])
-        x_test = np.stack((x1.flat, x2.flat, x3, x4), axis=1)  # 测试点
+            x3 = np.ones(x1.size) * np.average(x[:, 2])
+            x4 = np.ones(x1.size) * np.average(x[:, 3])
+            x_test = np.stack((x1.flat, x2.flat, x3, x4), axis=1)  # 测试点
     
         y_hat = logreg.predict(x_test)                  # 预测值
         y_hat = y_hat.reshape(x1.shape)                 # 使之与输入的形状相同
