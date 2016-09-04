@@ -7,9 +7,12 @@ encoding//machine-learning/myself/c4_LogisticRegression.py=utf-8
 encoding//machine-learning/teacher/2.intro.py=utf-8
 encoding//machine-learning/teacher/4.1.Advertising.py=utf-8
 encoding//machine-learning/teacher/4.2Iris.py=utf-8
+<<<<<<< HEAD
 encoding//machine-learning/teacher/6.1.Iris_DT.py=utf-8
 encoding//machine-learning/teacher/6.4.MultiOutput_DTR.py=utf-8
 encoding//machine-learning/teacher/6.5.RandomForest_Iris.py=utf-8
+=======
+>>>>>>> refs/remotes/origin/master
 encoding//machine-learning/teacher/class_1.py=utf-8
 encoding//python/data_structure/dictionary_map.py=utf-8
 encoding//python/data_structure/list.py=utf-8
@@ -25,3 +28,4 @@ encoding//python/note/my_class.py=utf-8
 encoding//python/note/my_string.py=utf-8
 encoding//python/note/type.py=utf-8
 encoding//python/note/unit.py=utf-8
+encoding//python/test.py=utf-8
