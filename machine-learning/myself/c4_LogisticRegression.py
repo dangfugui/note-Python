@@ -1,17 +1,12 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
-'''
-Created on 2016年8月30日
-
-@author: duang
-'''
 import csv
 import numpy as np
 from sklearn.cross_validation import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
 import matplotlib.pyplot as plt
-from sklearn.preprocessing.data import StandardScaler
+
 
 class LogisticRegression_my():
     def __init__(self):#初始化
