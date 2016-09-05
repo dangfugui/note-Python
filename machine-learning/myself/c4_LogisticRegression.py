@@ -55,7 +55,8 @@ class LogisticRegression_my():
         x,y=self.readFile()
         # 为了可视化，仅使用前两列特征
         if forview:
-            x = x[:, :2]
+#             x = x[:, :2]
+            x = x[:,(1,3)]
         #x=StandardScaler().fit_transform(x)#标准化  #这个做了不好
         logreg = LogisticRegression()   # Logistic回归模型
         logreg.fit(x, y.ravel())        # 根据数据[x,y]，计算回归参数

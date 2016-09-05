@@ -15,7 +15,7 @@ def iris_type(s):
 iris_feature = 'sepal length', 'sepal width', 'petal length', 'petal width'
 
 if __name__ == "__main__":
-    path = u'..\\算法讲师\\机器学习升级版\\数据\\4.iris.data'  # 数据文件路径
+    path=u'..\\..\\data\\machine-learning-4\\4.iris.data'  # 数据文件路径
 
     # 路径，浮点型数据，逗号分隔，第4列使用函数iris_type单独处理
     data = np.loadtxt(path, dtype=float, delimiter=',', converters={4: iris_type})
