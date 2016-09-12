@@ -2,11 +2,11 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
-encoding//machine-learning/myself/c2_library.py=utf-8
-encoding//machine-learning/myself/c2_matplotlib.py=utf-8
-encoding//machine-learning/myself/c2_numpy.py=utf-8
-encoding//machine-learning/myself/c4_LinearRegression.py=utf-8
-encoding//machine-learning/myself/c4_LogisticRegression.py=utf-8
+encoding//machine-learning/myself/c2_base/c2_library.py=utf-8
+encoding//machine-learning/myself/c2_base/c2_matplotlib.py=utf-8
+encoding//machine-learning/myself/c2_base/c2_numpy.py=utf-8
+encoding//machine-learning/myself/c4_regression/c4_LinearRegression.py=utf-8
+encoding//machine-learning/myself/c4_regression/c4_LogisticRegression.py=utf-8
 encoding//machine-learning/teacher/2.intro.py=utf-8
 encoding//machine-learning/teacher/4.1.Advertising.py=utf-8
 encoding//machine-learning/teacher/4.2Iris.py=utf-8
