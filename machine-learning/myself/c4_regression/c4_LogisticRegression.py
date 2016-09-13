@@ -18,7 +18,7 @@ class LogisticRegression_my():
         self.linearRegression_lris(True)
    
     def readFile(self):
-        path=u'..\\..\\data\\machine-learning-4\\4.iris.data'
+        path=u'..\\..\\..\\data\\machine-learning-4\\4.iris.data'
 #         #手动读文件
 #         f=file(path)
 #         x=[]

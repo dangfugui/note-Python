@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from sklearn.cross_validation import train_test_split#随机切分训练数据，测试数据
 from sklearn.linear_model.base import LinearRegression#线性回归
 
+
 class MLinearRegression():
     def __init__(self):#初始化
 #         print self.readFile();#读文件
@@ -40,7 +41,7 @@ class MLinearRegression():
         return data
         
     def plotXY(self):#绘制原始图
-        path=u'..\\..\\data\\machine-learning-4\\4.Advertising.csv'
+        path=u'..\\..\\..\\data\\machine-learning-4\\4.Advertising.csv'
         data=self.readFile(path);
         plt.plot(data['TV'],data['Sales'],'ro',label='TV')
         plt.plot(data['Radio'],data['Sales'],'g^',label='Radio')
@@ -50,7 +51,7 @@ class MLinearRegression():
         plt.show()
     
     def plotXY3(self):#绘制原始对比图
-        path=u'..\\..\\data\\machine-learning-4\\4.Advertising.csv'
+        path=u'..\\..\\..\\data\\machine-learning-4\\4.Advertising.csv'
         data=self.readFile(path);
         plt.figure(figsize=(9,12))#9*12英寸的图片
         plt.subplot(311)    #3行1列 绘制第1个
@@ -69,7 +70,7 @@ class MLinearRegression():
         plt.show()
         
     def linearRegression_sales(self):#线性回归
-        path=u'..\\..\\data\\machine-learning-4\\4.Advertising.csv'
+        path=u'..\\..\..\\\data\\machine-learning-4\\4.Advertising.csv'
         data=self.readFile(path);
 #         x=data[['TV', 'Radio', 'Newspaper']]
         x=data[['TV', 'Radio']]
