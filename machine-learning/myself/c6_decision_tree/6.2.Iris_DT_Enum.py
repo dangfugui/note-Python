@@ -53,7 +53,6 @@ if __name__ == "__main__":
         print '特征：  ', iris_feature[pair[0]], ' + ', iris_feature[pair[1]],
         print '\t预测正确数目：', c,
         print '\t准确率: %.2f%%' % (100 * float(c) / float(len(y)))
-
         # 显示
         y_hat = dt_clf.predict(x_test)  # 预测值
         y_hat = y_hat.reshape(x1.shape)  # 使之与输入的形状相同
