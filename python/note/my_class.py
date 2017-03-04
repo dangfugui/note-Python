@@ -22,6 +22,7 @@ class CocaCola:
         self.local_logo = logo_name
     def drink(self):
         print('You got {} cal energy!'.format(self.calories))
+
    
 class CaffeineFree(CocaCola): #继承
     calories=0

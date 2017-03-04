@@ -5,8 +5,7 @@ Created on 2016年9月4日
 
 @author: duang
 '''
-from baike_spider import url_manager, html_parser, html_outputer,\
-    html_downloader
+import url_manager, html_parser, html_outputer,html_downloader
 class SpiderMain():
     def __init__(self):
         self.urls=url_manager.UrlManager()
@@ -35,5 +34,5 @@ class SpiderMain():
 
 if __name__ == '__main__':
     root_url="http://baike.baidu.com/view/21087.htm";
-    obj_spider=SpiderMain()
+    obj_spider=SpiderMain();
     obj_spider.craw(root_url);

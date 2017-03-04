@@ -28,4 +28,3 @@ print b,t1-t0
 letters=['a','b','c','d']
 for num,letter in enumerate(letters):
     print (letter,'index is',num)
-    

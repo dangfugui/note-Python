@@ -31,7 +31,7 @@ if __name__ == "__main__":
     plt.figure(figsize=(12, 10), facecolor='#FFFFFF')
     for i, pair in enumerate(feature_pairs):
         # 准备数据
-        x = x_prime[:, paeir]
+        x = x_prime[:, pair]
 
         # 决策树学习
         clf = DecisionTreeClassifier(criterion='entropy', min_samples_leaf=3)

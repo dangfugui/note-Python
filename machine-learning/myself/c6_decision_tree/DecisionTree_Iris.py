@@ -46,7 +46,7 @@ class DecisionTreeIris:
         x1,x2=np.meshgrid(t1,t2)#生成网格采样点
         x_test=np.stack((x1.flat, x2.flat),  axis=1)#测试点
         y_hat=dt_clf.predict(x_test)#预测值
-        y_hat=y_hat.reshape(x1.shape)#使与输入的形状相同
+        y_hat=y_hat.reshape(x1.shape)#使与输入的形状相 同
         print y_hat
         plt.pcolormesh(x1, x2, y_hat, cmap=plt.cm.Spectral, alpha=0.1)  # 预测值的显示Paired/Spectral/coolwarm/summer/spring/OrRd/Oranges
 #         plt.plot(x1,x2,'go',label='x1,x2',Linewidth=2,alpha=0.8);

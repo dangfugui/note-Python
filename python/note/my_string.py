@@ -14,7 +14,7 @@ print name[11:15]#Mike
 print name[5:]#me is Mike 
 print name[:5]#My na
 index='0123456789-9876543210'
-print index[-1]
+print index[-1]#0
 phone_number="183-1097-7758"
 hiding_number=phone_number.replace(phone_number[:9],'*'*9)
 print hiding_number
