@@ -113,5 +113,5 @@ if __name__ == '__main__':
     # myNumpy.array()#数组
     #myNumpy.space()#等差等比
     #myNumpy.section()#切片
-    #myNumpy.mapArray()#形状 二维数组和切片
-    myNumpy.time()#numpy和python的运算效率对比
+    myNumpy.mapArray()#形状 二维数组和切片
+    #myNumpy.time()#numpy和python的运算效率对比

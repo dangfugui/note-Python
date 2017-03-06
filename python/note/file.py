@@ -37,6 +37,7 @@ def cur_file_dir():
 path=cur_file_dir()
 print  path
 text_create(path+'\\text.txt',msg='message\t\nmesage1')
+text_create(path+'\\text.txt',msg='message\t\nmesage1111')
 text_read(path+'\\text.txt')
 
 

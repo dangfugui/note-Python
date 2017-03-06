@@ -272,12 +272,12 @@ if __name__ == "__main__":
     # plot.show()
 
     # # 5.5 心形线
-    # t = np.linspace(0, 7, 100)
-    # x = 16 * np.sin(t) ** 3
-    # y = 13 * np.cos(t) - 5 * np.cos(2*t) - 2 * np.cos(3*t) - np.cos(4*t)
-    # plot.plot(x, y, 'r-', linewidth=2)
-    # plot.grid(True)
-    # plot.show()
+    t = np.linspace(0, 7, 100)
+    x = 16 * np.sin(t) ** 3
+    y = 13 * np.cos(t) - 5 * np.cos(2*t) - 2 * np.cos(3*t) - np.cos(4*t)
+    plot.plot(x, y, 'r-', linewidth=2)
+    plot.grid(True)
+    plot.show()
 
     # # 5.6 渐开线
     # t = np.linspace(0, 50, num=1000)
