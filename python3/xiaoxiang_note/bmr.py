@@ -21,17 +21,22 @@ def bmr_v2():
     print("请依次输入一下信息，用空格隔开")
     while is_exit == "n":
         input_arr = input("性别 体重(kg) 身高(cm) 年龄\n").split(" ")
-        gender = input_arr[0]
-        weight = eval(input_arr[1])
-        height = eval(input_arr[2])
-        age = eval(input_arr[3])
-        if gender == "男":
-            bmr = (13.7 * weight) + (5.0 * height) - (6.8 * age) + 66
-        elif gender == "女":
-            bmr = (9.6 * weight) + (1.8 * height) + 655
-        else:
-            print("不支持性别", gender)
-        print("BMR:{}大卡".format(bmr))
+        try:
+            gender = input_arr[0]
+            weight = eval(input_arr[1])
+            height = eval(input_arr[2])
+            age = eval(input_arr[3])
+            if gender == "男":
+                bmr = (13.7 * weight) + (5.0 * height) - (6.8 * age) + 66
+            elif gender == "女":
+                bmr = (9.6 * weight) + (1.8 * height) + 655
+            else:
+                print("不支持性别", gender)
+            print("BMR:{}大卡".format(bmr))
+        except ValueError:
+            print("请输入正确信息")
+        except:
+            print("程序异常")
         is_exit = input("是否退出程序(y/n)")
 
 
