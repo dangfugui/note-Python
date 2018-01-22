@@ -1,12 +1,13 @@
 
 import math
 
-def main() -> object:
+saving = 0
+def main():
     money_per_week = 10
     week = 1
     increase_money = 10
     total_week = 52
-    saving = 0
+    global saving   # 这个函数的saving是对全局的saving操作
     money_list = []
     while week <= total_week:
         saving += money_per_week
@@ -18,5 +19,7 @@ def main() -> object:
     for i in money_list:
         print(i)
     print("sum:", math.fsum(money_list))
+
+
 if __name__ == '__main__':
     main()
