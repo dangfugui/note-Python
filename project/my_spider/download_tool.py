@@ -12,6 +12,13 @@ import requests
 import threading
 import os
 import time
+import logging as log
+import download_tool
+
+log.basicConfig(level=log.INFO,
+                format="%(asctime)s %(name)s %(levelname)s %(message)s",
+                datefmt='%Y-%m-%d  %H:%M:%S %a'  # 注意月份和天数不要搞乱了，这里的格式化符与time模块相同
+                )
 
 
 def download(url, filename, thread_count=5, headers={
@@ -42,13 +49,13 @@ class DownloadWorkerThread(threading.Thread):
         if os.path.exists(self.filename):
             return
         self.range_manager = self.read_range_file()
-        print(u"Begin Downloading \nurl= " + self.url + "\nfilename = " + self.filename)
+        log.info(u"Begin Downloading \nurl= " + self.url + "\nfilename = " + self.filename)
         if self.url.strip() == "":
             return
         tlst = []
         for i in range(self.thread_count):
             t = threading.Thread(target=self.RangeWorker, args=(self,))
-            print(u"Start Thread :" + t.getName())
+            log.info(u"Start Thread :" + t.getName())
             t.setDaemon(True)
             t.start()
             tlst.append(t)
@@ -78,7 +85,7 @@ class DownloadWorkerThread(threading.Thread):
         self.fileinfo_lock.acquire()
         manager = None
         if os.path.exists(self.fileinfo_name):
-            print("read filename " + self.fileinfo_name)
+            log.info("read filename " + self.fileinfo_name)
             manager = DownloadWorkerThread.FileInfoManager(self.fileinfo_name, url=self.url)
             self.content_length = manager.get_total_length()
             if self.url.strip() == "":
@@ -86,7 +93,7 @@ class DownloadWorkerThread(threading.Thread):
         else:
             self.content_length = self.get_content_length()
 
-            print("create filename_info length:" + str(self.content_length))
+            log.info("create filename_info length:" + str(self.content_length))
             with open(self.filename, "wb+") as f:
                 f.seek(self.content_length)
             manager = DownloadWorkerThread.FileInfoManager(self.fileinfo_name, url=self.url,
@@ -101,15 +108,15 @@ class DownloadWorkerThread(threading.Thread):
         while length < 1024 * 1024 * 3:
             time.sleep(3)
             length = int(requests.get(self.url, headers=self.headers).headers['content-Range'].split('/')[1])
-            print("Get length " + str(length))
+            log.info("Get length " + str(length))
         return length
 
     def RangeWorker(self, downloadWorker):
         while True:
             content_range = downloadWorker.read_next_range()
-            if content_range == 0:
+            if content_range == 0 and os.path.exists(self.fileinfo_name):
                 os.remove(self.fileinfo_name)
-                print(self.filename + " finished")
+                log.info(self.filename + " finished")
                 break
             headers = downloadWorker.headers
             headers['Range'] = "bytes=" + str(content_range[0]) + "-" + str(content_range[1] - 1)
@@ -118,14 +125,14 @@ class DownloadWorkerThread(threading.Thread):
                 r = requests.get(downloadWorker.url, headers=headers)
                 if r.ok:
                     downloadWorker.write_content(r.content, content_range)
-                    print("We are working on " + self.filename + " and now processing : " + \
+                    log.info("We are working on " + self.filename + " and now processing : " + \
                           str(round(1.0 * content_range[1] / self.content_length * 100, 2)) + "% in size " + str(
                         round(self.content_length / 1024.0 / 1024.0, 2)) + "MB.")
                     break
                 else:
                     iTryTimes += 1
                     if iTryTimes > 1:
-                        print("Downloading " + downloadWorker.url + " error. Now Exit Thread.")
+                        log.info("Downloading " + downloadWorker.url + " error. Now Exit Thread.")
                         return
 
     class FileInfoManager():
@@ -252,6 +259,6 @@ if __name__ == '__main__':
     filename = "/e/temp/haha.mp3"
     t = download(url, filename, 10)
     while t.is_alive():
-        print("sleep")
+        log.info("sleep")
         time.sleep(60)
-    print("bye")
+    log.info("bye")
