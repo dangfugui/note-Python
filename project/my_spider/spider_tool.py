@@ -12,19 +12,23 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
 }
 
+conf_timeout = 60 * 10
 
 def get_page(url):
     log.info("get_page:[%s]", url)
     req = urllib.request.Request(url, headers=headers)
-    x = urllib.request.urlopen(req)
+    x = urllib.request.urlopen(req, timeout=conf_timeout)
     source_code = x.read()
     return source_code
 
 
 def down_file(url, path):
+    if os.path.exists(path):
+        log.info("down_exists:[%s] path:[%s]", url, path)
+        return
     log.info("down_file:[%s] path:[%s]", url, path)
     req = urllib.request.Request(url=url, headers=headers)
-    response = urllib.request.urlopen(req)
+    response = urllib.request.urlopen(req,timeout=conf_timeout)
     chunk = 16 * 1024
     with open(path, 'wb') as f:
         while True:

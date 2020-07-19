@@ -17,8 +17,9 @@ log.basicConfig(level=log.DEBUG,
 
 # root_url = "https://www.6234pu.com/"
 # root_url = "https://www.3567na.com/"
-root_url = "https://www.3678qi.com/"
+# root_url = "https://www.3678qi.com/"
 # root_url = "https://www.6678nv.com/"
+root_url = "https://www.3345ou.com"
 # work_path = "/e/temp/" + (time.strftime("%Y-%m-%d", time.localtime())) + '/'
 work_path = "/srv/dev-disk-by-label-cache/_download/home/"
 

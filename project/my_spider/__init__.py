@@ -15,4 +15,4 @@ log.basicConfig(level=log.INFO,
 
 # if __name__ == '__main__':
 #     start()
-    # downFile('https://pppp.642p.com/image/202004/xj3l9sLu.jpg', work_path + 'test.jpg')
+    # downFile('https://pppp.642p.com/image/202004/xj3l9sLu.jpg', work_path + 'test.py.jpg')
