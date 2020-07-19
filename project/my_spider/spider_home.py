@@ -5,48 +5,24 @@ pip install -i https://pypi.douban.com/simple/ beautifulsoup4 lxml
 pip install --user beautifulsoup4 lxml
 @author: duang
 '''
-import os,time
-import urllib
+import os
 from bs4 import BeautifulSoup
 import logging as log
-import download_tool
+import spider_tool
 
 log.basicConfig(level=log.DEBUG,
                 format="%(asctime)s %(name)s %(levelname)s %(message)s",
                 datefmt='%Y-%m-%d  %H:%M:%S %a'  # 注意月份和天数不要搞乱了，这里的格式化符与time模块相同
                 )
 
-root_url = "https://www.6234pu.com/"
+# root_url = "https://www.6234pu.com/"
 # root_url = "https://www.3567na.com/"
-# root_url = "https://www.3678qi.com/"
+root_url = "https://www.3678qi.com/"
+# root_url = "https://www.6678nv.com/"
 # work_path = "/e/temp/" + (time.strftime("%Y-%m-%d", time.localtime())) + '/'
-work_path = "/srv/dev-disk-by-label-cache/_download/"
-thread_count=5
+work_path = "/srv/dev-disk-by-label-cache/_download/home/"
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"}
-
-
-def getPage(url):
-    # pretend to be a chrome 47 browser on a windows 10 machine
-    req = urllib.request.Request(url, headers=headers)
-    # open the url
-    x = urllib.request.urlopen(req)
-    # get the source code
-    sourceCode = x.read()
-    return sourceCode
-
-
-def downFile(url, path):
-    req = urllib.request.Request(url=url, headers=headers)
-    response = urllib.request.urlopen(req)
-    chunk = 16 * 1024
-    with open(path, 'wb') as f:
-        while True:
-            chunk = response.read(chunk)
-            if not chunk:
-                break
-            f.write(chunk)
+aria2_list = []
 
 
 def parserLi(li):
@@ -56,7 +32,7 @@ def parserLi(li):
     time = li.find("span", {"class": "note"}).text
     log.info("parser li: name:[%s] image:{%s} infoUrl:{%s}", name, imageUrl, infoUrl)
     # 进入详情页
-    soup = BeautifulSoup(getPage(infoUrl), 'lxml')
+    soup = BeautifulSoup(spider_tool.get_page(infoUrl), 'lxml')
     type = soup.find("div", {"id": "detail-box"}).find_all('dd')[0].a.text
     day_path = work_path + time + "/"
     if not os.path.exists(day_path):
@@ -64,33 +40,34 @@ def parserLi(li):
     # 下载图片
     imagepath = day_path + type + "___" + name + imageUrl[-4:]
     if not os.path.exists(imagepath):
-        downFile(imageUrl, imagepath)
+        spider_tool.down_file(imageUrl, imagepath)
     # 进入下载页面
     downUrl = root_url + soup.find_all("div", {"class": "ui-box border-gray clearfix"})[1].find_all("a")[1].attrs[
         "href"]
-    downSoup = BeautifulSoup(getPage(downUrl), 'lxml')
+    downSoup = BeautifulSoup(spider_tool.get_page(downUrl), 'lxml')
     videoUrl = downSoup.find("div", {"class": "download"}).a.attrs["href"]
     log.info("start down:type:[%s] name:[%s] video:{%s} path:{%s}", type, name, videoUrl,
              day_path + type + "___" + name + videoUrl[-4:])
-    t = download_tool.download(videoUrl, day_path + type + "___" + name + videoUrl[-4:], thread_count)
-    t.join()
+    # t = spider_tool.download_aria2(videoUrl, type + "___" + name + videoUrl[-4:], day_path)
+    aria2_list.append({"url": videoUrl, "name": type + "___" + name + videoUrl[-4:], "path": day_path})
     log.info("end down:type:[%s] name:[%s] video:{%s} path:{%s}", type, name, videoUrl,
              day_path + type + "___" + name + videoUrl[-4:])
     # time.sleep(10) # sleep 10秒
-
 
 
 def start():
     isExists = os.path.exists(work_path)
     if not isExists:
         os.makedirs(work_path)
-    soup = BeautifulSoup(getPage(root_url), 'lxml')
+    soup = BeautifulSoup(spider_tool.get_page(root_url), 'lxml')
     ul = soup.find_all('ul', {'class': 'clearfix'})[0]
     for li in ul.find_all('li'):
         try:
             parserLi(li)
         except Exception as err:
             log.error(err)
+    for dict in aria2_list:
+        spider_tool.download_aria2(dict['url'], dict['name'], dict['path'])
 
 
 if __name__ == '__main__':

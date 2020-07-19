@@ -1,27 +1,56 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Jul  1 16:47:38 2019
-
-@author: Administrator
-"""
-
-# -*- coding: utf-8 -*-
-# 单下载链接多任务下载
-
-import requests
-import threading
-import os
-import time
+#! -coding:utf8 -*-
+from pyaria2 import Aria2RPC
 import logging as log
+import urllib, requests
+import os, time, threading
 
 log.basicConfig(level=log.DEBUG,
                 format="%(asctime)s %(name)s %(levelname)s %(message)s",
                 datefmt='%Y-%m-%d  %H:%M:%S %a'  # 注意月份和天数不要搞乱了，这里的格式化符与time模块相同
                 )
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+}
 
 
-def download(url, filename, thread_count=5, headers={
+def get_page(url):
+    log.info("get_page:[%s]", url)
+    req = urllib.request.Request(url, headers=headers)
+    x = urllib.request.urlopen(req)
+    source_code = x.read()
+    return source_code
+
+
+def down_file(url, path):
+    log.info("down_file:[%s] path:[%s]", url, path)
+    req = urllib.request.Request(url=url, headers=headers)
+    response = urllib.request.urlopen(req)
+    chunk = 16 * 1024
+    with open(path, 'wb') as f:
+        while True:
+            chunk = response.read(chunk)
+            if not chunk:
+                break
+            f.write(chunk)
+
+
+def download_aria2(url, filename, work_path="/srv/dev-disk-by-label-cache/_download/"):
+    if os.path.exists(work_path + "/" + filename):
+        log.info("aria2 exists path:[%s] url:[%s] filename:[%s]", work_path, url, filename)
+        return
+    if not os.path.exists(work_path):
+        log.warning("makedirs:[%s]", work_path)
+        os.makedirs(work_path, mode=0o777, exist_ok=False)
+    log.info("aria2down path:[%s] url:[%s] filename:[%s]", work_path, url, filename)
+    jsonrpc = Aria2RPC(url="http://192.168.0.11:6800/rpc")
+    options = {"dir": work_path, "out": filename, }
+    hook_id = jsonrpc.addUri([url], options=options)
+    log.info("aria2down path:[%s] url:[%s] filename:[%s] hookid:[%s]", work_path, url, filename, hook_id)
+
+
+def download_multithread(url, filename, thread_count=5, headers={
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3559.6 Safari/537.36'}):
+    log.info("down_file:[%s] path:[%s]", url, filename)
     t = DownloadWorkerThread(url, filename, headers=headers, thread_count=thread_count)
     t.start()
     return t
@@ -125,7 +154,7 @@ class DownloadWorkerThread(threading.Thread):
                 if r.ok:
                     downloadWorker.write_content(r.content, content_range)
                     log.info("We are working on " + self.filename + " and now processing : " + \
-                          str(round(1.0 * content_range[1] / self.content_length * 100, 2)) + "% in size " + str(
+                             str(round(1.0 * content_range[1] / self.content_length * 100, 2)) + "% in size " + str(
                         round(self.content_length / 1024.0 / 1024.0, 2)) + "MB.")
                     break
                 else:
@@ -246,18 +275,3 @@ class DownloadWorkerThread(threading.Thread):
             self.writing_range = self._splice(self.writing_range, content_range)
             self.written_range = self._concat(self.written_range, content_range)
             self._save_to_file()
-
-
-# t = DownloadWorkerThread(r'http://a3.kuaihou.com/ruanjian/ucdnb.zip',\
-#                         'd:\\ucdnb.zip', \
-#                         headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3559.6 Safari/537.36'})
-# t.start()
-
-if __name__ == '__main__':
-    url = 'https://d1.xia12345.com/dl2/videos/202004/xj3l9sLu/downloads/xj3l9sLu.mp4'
-    filename = "/e/temp/haha.mp3"
-    t = download(url, filename, 10)
-    while t.is_alive():
-        log.info("sleep")
-        time.sleep(60)
-    log.info("bye")
