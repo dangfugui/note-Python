@@ -12,7 +12,7 @@ headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
 }
 
-conf_timeout = 60 * 10
+conf_timeout = 60
 
 def get_page(url):
     log.info("get_page:[%s]", url)
@@ -46,7 +46,7 @@ def download_aria2(url, filename, work_path="/srv/dev-disk-by-label-cache/_downl
         log.warning("makedirs:[%s]", work_path)
         os.makedirs(work_path, mode=0o777, exist_ok=False)
     log.info("aria2down path:[%s] url:[%s] filename:[%s]", work_path, url, filename)
-    jsonrpc = Aria2RPC(url="http://192.168.0.11:6800/rpc")
+    jsonrpc = Aria2RPC(url="http://127.0.0.1:6800/rpc")
     options = {"dir": work_path, "out": filename, }
     hook_id = jsonrpc.addUri([url], options=options)
     log.info("aria2down path:[%s] url:[%s] filename:[%s] hookid:[%s]", work_path, url, filename, hook_id)
