@@ -1,0 +1,2 @@
+# 拷贝文件夹 显示当前拷贝文件   -
+nohup cp -r -v -n /srv/dev-disk-by-label-cache/_download/ /srv/dev-disk-by-label-File/库/yaoyao/ > cplog.log 2>&1 &

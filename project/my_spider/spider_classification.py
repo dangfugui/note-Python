@@ -29,7 +29,7 @@ root_url = "https://www.6234ca.com/"
 work_path = "/srv/dev-disk-by-label-share/_download/class/"
 check_path = "/srv/dev-disk-by-label-File/yaoyao/_download/class/"
 check_du_file = "/srv/dev-disk-by-label-share/_python/du_all.txt"
-is_prod = False
+is_prod = True
 
 type_list = [
     {'href': '/', 'type': '#首页'},  ## 一级页
@@ -76,12 +76,14 @@ def exists_check(url, filename, dir_path):
     # 读取文件里面每一行
     with open(check_du_file, encoding='utf-8') as f:
         for line in f.readlines():
-            if line.find(filename) != -1: return True
+            if line.find(filename) != -1: 
+                log.info("check_du exists  url:[%s] line:[%s]",url, line)
+                return True
 
     flie_path = dir_path + "/" + filename
     check_file = flie_path.replace(work_path, check_path)
     if os.path.exists(check_file):
-        log.info("check_path exists path:[%s] url:[%s]", check_file, dict['url'])
+        log.info("check_path exists path:[%s] url:[%s]", check_file, url)
         return True
     return False
 
@@ -145,11 +147,11 @@ if __name__ == '__main__':
         root_url = sys.argv[1]
     for item in type_list:
         try:
-            # sitart_spider(root_url + item['href'], item['type'])
-            pass
+            start_spider(root_url + item['href'], item['type'])
+            # pass
         except Exception as err:
             log.error(err)
-    for page in range(2, 3):  ## 左开右闭
+    for page in range(5, 15):  ## 左开右闭
         for item in type_list:
             if "#" not in item['type']:
                 try:
