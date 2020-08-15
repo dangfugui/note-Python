@@ -30,7 +30,7 @@ work_path = "/srv/dev-disk-by-label-share/_download/class/"
 check_path = "/srv/dev-disk-by-label-File/yaoyao/_download/class/"
 check_du_file = "/srv/dev-disk-by-label-share/_python/du_all.txt"
 is_prod = True
-
+all_file_dict = {}
 type_list = [
     {'href': '/', 'type': '#首页'},  ## 一级页
     {'href': '/vod/html1/', 'type': '#国产精品'},  ## 一级页
@@ -42,50 +42,66 @@ type_list = [
     {'href': '/vod/html7/', 'type': '手机小视频'},
     {'href': '/vod/html8/', 'type': '经典三级'},
     {'href': '/vod/html9/', 'type': '#亚洲无码'},  ## 一级页
-    # {'href': '/vod/html10/', 'type': '无码中字'},
-    # {'href': '/vod/html9/html22/', 'type': 'S级女优'},
-    # {'href': '/vod/html34/', 'type': 'SM系列'},
-    # {'href': '/vod/html11/', 'type': '熟女人妻'},
-    # {'href': '/vod/html12/', 'type': '美颜巨乳'},
-    # {'href': '/vod/html13/', 'type': '颜射吃精'},
-    # {'href': '/vod/html14/', 'type': '丝袜制服'},
-    # {'href': '/vod/html15/', 'type': '高清无码'},
+    {'href': '/vod/html10/', 'type': '无码中字'},
+    {'href': '/vod/html9/html22/', 'type': 'S级女优'},
+    {'href': '/vod/html34/', 'type': 'SM系列'},
+    {'href': '/vod/html11/', 'type': '熟女人妻'},
+    {'href': '/vod/html12/', 'type': '美颜巨乳'},
+    {'href': '/vod/html13/', 'type': '颜射吃精'},
+    {'href': '/vod/html14/', 'type': '丝袜制服'},
+    {'href': '/vod/html15/', 'type': '高清无码'},
     {'href': '/vod/html16/', 'type': '中文有码'},
     {'href': '/vod/html17/', 'type': '#著名女优'},  ## 一级页
-    # {'href':'/vod/html18/', 'type':'宇都宮紫苑'},
-    # {'href':'/vod/html19/', 'type':'天海翼'},
-    # {'href':'/vod/html20/', 'type':'水菜麗'},
-    # {'href':'/vod/html21/', 'type':'泷泽萝拉'},
+    {'href':'/vod/html18/', 'type':'宇都宮紫苑'},
+    {'href':'/vod/html19/', 'type':'天海翼'},
+    {'href':'/vod/html20/', 'type':'水菜麗'},
+    {'href':'/vod/html21/', 'type':'泷泽萝拉'},
     # {'href':'/vod/html23/', 'type':'波多野结衣'},
-    # {'href':'/vod/html24/', 'type':'吉泽明步'},
-    # {'href':'/vod/html25/', 'type':'苍井空'},
-    # {'href':'/vod/html35/', 'type':'樱井莉亚'},
-    # {'href':'/vod/html36/', 'type':'小川阿佐美'},
-    # {'href':'/vod/html37/', 'type':'松岛枫'},
-    # {'href':'/vod/html38/', 'type':'冬月枫'},
-    # {'href':'/vod/html39/', 'type':'三上悠亚'},
-    # {'href':'/vod/html40/', 'type':'桥本凉'},
-    # {'href':'/vod/html41/', 'type':'北野望'},
-    # {'href':'/vod/html42/', 'type':'大桥未久'},
+    {'href':'/vod/html24/', 'type':'吉泽明步'},
+    {'href':'/vod/html25/', 'type':'苍井空'},
+    {'href':'/vod/html35/', 'type':'樱井莉亚'},
+    {'href':'/vod/html36/', 'type':'小川阿佐美'},
+    {'href':'/vod/html37/', 'type':'松岛枫'},
+    {'href':'/vod/html38/', 'type':'冬月枫'},
+    {'href':'/vod/html39/', 'type':'三上悠亚'},
+    {'href':'/vod/html40/', 'type':'桥本凉'},
+    {'href':'/vod/html41/', 'type':'北野望'},
+    {'href':'/vod/html42/', 'type':'大桥未久'},
     {'href': '/vod/html26/', 'type': '动漫卡通'},
     {'href': '/vod/html27/', 'type': '欧美系列'}
 ]
 
 
+def exists_check2(filename):
+    # 读取文件里面每一行
+    if len(all_file_dict) == 0: 
+        with open(check_du_file, encoding='utf-8') as f:
+            for line in f.readlines():
+                key = os.path.split(line)[-1].strip()
+                all_file_dict[key] = line.strip()
+                log.info("add_dict: %s = %s",key,line.strip())
+        print(all_file_dict.keys)
+    key = os.path.split(filename)[-1].strip()
+    # log.info("dict_find:[%s]  = %s",key,all_file_dict.get(key))
+    if key in all_file_dict:
+        log.info("dict_find:[%s]  = %s",key,all_file_dict.get(key))
+        return True
+    else:
+        log.info("dict_not_find:%s",key)
+        return False
+
+
 def exists_check(url, filename, dir_path):
     # 读取文件里面每一行
-    with open(check_du_file, encoding='utf-8') as f:
-        for line in f.readlines():
-            if line.find(filename) != -1: 
-                log.info("check_du exists  url:[%s] line:[%s]",url, line)
-                return True
-
+    if exists_check2(filename): return True
     flie_path = dir_path + "/" + filename
     check_file = flie_path.replace(work_path, check_path)
     if os.path.exists(check_file):
         log.info("check_path exists path:[%s] url:[%s]", check_file, url)
         return True
     return False
+
+
 
 
 def parserLi(li, index=1):
@@ -102,7 +118,8 @@ def parserLi(li, index=1):
         os.makedirs(day_path)
     # 下载图片
     imagepath = day_path + type + "___" + name + imageUrl[-4:]
-    spider_tool.down_file(imageUrl, imagepath)
+    if not exists_check2(type + "___" + name + imageUrl[-4:]):
+        spider_tool.down_file(imageUrl, imagepath)
     # 进入下载页面
     downUrl = root_url + soup.find_all("div", {"class": "ui-box border-gray clearfix"})[1].find_all("a")[1].attrs[
         "href"]
@@ -151,7 +168,7 @@ if __name__ == '__main__':
             # pass
         except Exception as err:
             log.error(err)
-    for page in range(5, 15):  ## 左开右闭
+    for page in range(2, 26):  ## 左开右闭
         for item in type_list:
             if "#" not in item['type']:
                 try:

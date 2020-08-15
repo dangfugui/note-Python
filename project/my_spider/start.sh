@@ -12,7 +12,7 @@ ps ux | grep -E 'spider_' | grep -v grep |awk '{print $2}' |xargs kill -s 9
 
 
 
-file=./log/$(date "+%Y-%m-%d__%H:%M:%S.log")
+file=./log/$(date "+%Y%m%d_%H%M%S.log")
 echo $file
 echo ''>>$file
 nohup python3 ./spider_classification.py > $file  2>&1 &
